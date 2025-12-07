@@ -8,12 +8,6 @@ pipeline {
 
     stages {
 
-        stage('Checkout Code') {
-            steps {
-                git branch: 'main', url: 'https://github.com/husseinsahm/lms.git'
-            }
-        }
-
         stage('Docker Build') {
             steps {
                 sh 'docker build -t lms-app .'
