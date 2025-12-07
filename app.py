@@ -5,7 +5,7 @@ import os
 app = Flask(__name__)
 app.secret_key = 'secret123'
 
-DB_FILE = 'library.db'
+DB_FILE = '/app/data/library.db'
 
 # ----------------------- Database -----------------------
 def get_db_connection():
