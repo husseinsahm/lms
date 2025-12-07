@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lms-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: lms
+  template:
+    metadata:
+      labels:
+        app: lms
+    spec:
+      containers:
+        - name: lms
+          image: husseinsahm/lms:latest
+          ports:
+            - containerPort: 5000
+          volumeMounts:
+            - name: lms-db
+              mountPath: /app/library.db
+              subPath: library.db
+      volumes:
+        - name: lms-db
+          emptyDir: {}

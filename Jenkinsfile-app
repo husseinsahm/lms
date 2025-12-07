@@ -1,0 +1,39 @@
+pipeline {
+    agent any
+
+    environment {
+        DOCKERHUB = credentials('dockerhub-creds')
+    }
+
+    stages {
+
+        stage('Checkout Code') {
+            steps {
+                git branch: 'main', url: 'https://github.com/husseinsahm/lms.git'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t lms-app .'
+            }
+        }
+
+        stage('Push to DockerHub') {
+            steps {
+                sh "docker tag lms-app husseinsahm/lms:latest"
+                sh "echo ${DOCKERHUB_PSW} | docker login -u ${DOCKERHUB_USR} --password-stdin"
+                sh "docker push husseinsahm/lms:latest"
+            }
+        }
+
+        stage('Deploy to EKS') {
+            steps {
+                sh 'aws eks --region us-east-1 update-kubeconfig --name my-eks-cluster'
+
+                sh 'kubectl apply -f k8s/deployment.yaml'
+                sh 'kubectl apply -f k8s/service.yaml'
+            }
+        }
+    }
+}
