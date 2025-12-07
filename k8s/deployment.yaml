@@ -17,12 +17,10 @@ spec:
           image: husseinsahm/lms:latest
           ports:
             - containerPort: 5000
-
-          # هنا تخزين قاعدة البيانات
           volumeMounts:
             - name: lms-db
-              mountPath: /app/data  # مجلد يحتوي db
-          
+              mountPath: /app/library.db
+              subPath: library.db
       volumes:
         - name: lms-db
           persistentVolumeClaim:
