@@ -28,14 +28,18 @@ pipeline {
                     export AWS_ACCESS_KEY_ID=${AWS_CREDS_USR}
                     export AWS_SECRET_ACCESS_KEY=${AWS_CREDS_PSW}
                     export AWS_DEFAULT_REGION=us-east-1
-                    
-                    aws sts get-caller-identity
-                    aws eks update-kubeconfig --region us-east-1 --name myapp-test-cluster
-
-                    kubectl apply -f k8s/deployment.yaml
-                    kubectl apply -f k8s/service.yaml
                 """
+
+                sh 'aws eks update-kubeconfig --region us-east-1 --name myapp-test-cluster'
+
+                // Apply PVC first
+                sh 'kubectl apply -f k8s/pvc.yaml'
+
+                // Then deployment + service
+                sh 'kubectl apply -f k8s/deployment.yaml'
+                sh 'kubectl apply -f k8s/service.yaml'
             }
         }
+
     }
 }
