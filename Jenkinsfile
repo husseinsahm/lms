@@ -27,10 +27,10 @@ pipeline {
                 sh """
                     export AWS_ACCESS_KEY_ID=${AWS_CREDS_USR}
                     export AWS_SECRET_ACCESS_KEY=${AWS_CREDS_PSW}
-                    export AWS_DEFAULT_REGION=us-east-1
+                    export AWS_DEFAULT_REGION=eu-west-1
                 """
 
-                sh 'aws eks update-kubeconfig --region us-east-1 --name myapp-test-cluster'
+                sh 'aws eks update-kubeconfig --region eu-west-1 --name devops-eks-test-cluster'
 
                 // Apply PVC first
                 sh 'kubectl apply -f k8s/pvc.yaml'
