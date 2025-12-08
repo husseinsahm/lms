@@ -19,8 +19,7 @@ spec:
             - containerPort: 5000
           volumeMounts:
             - name: lms-db
-              mountPath: /app/library.db
-              subPath: library.db
+              mountPath: /app/data
       volumes:
         - name: lms-db
           persistentVolumeClaim:
